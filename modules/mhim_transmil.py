@@ -1,17 +1,13 @@
-import copy
 import torch
 import numpy as np
+import sys
 from torch import nn
 from einops import repeat
-import torchvision.models as models
 from modules.emb_position import *
-from modules.transformer import *
 from modules.mlp import *
 from modules.datten import *
-from modules.swin_atten import *
 import torch.nn.functional as F
 from modules.translayer import *
-import math
 
 sys.path.append("..")
 from utils import group_shuffle, patch_shuffle
@@ -79,9 +75,6 @@ class MAE(nn.Module):
         elif attn == 'dattn':
             self.layer1 = DAttention()
             self.layer2 = DAttention()
-        elif attn == 'swin':
-            self.layer1 = SwinTransformerBlock(dim=mlp_dim,num_heads=8,fused_window_process=True,drop_path=0.1,window_num=region_num,need_down=True,need_reduce=True)
-            self.layer2 = SwinTransformerBlock(dim=mlp_dim,num_heads=8,fused_window_process=True,drop_path=0.1,window_num=region_num)
 
         if pos == 'ppeg':
             self.pos_embedding = PPEG(dim=mlp_dim,k=peg_k)

@@ -5,14 +5,11 @@ from torch import nn
 from einops import repeat
 import torchvision.models as models
 from modules.emb_position import *
-from modules.transformer import *
 from modules.mlp import *
 from modules.datten import *
-from modules.swin_atten import *
 import torch.nn.functional as F
 from modules.translayer import *
 
-sys.path.append("..")
 
 
 def initialize_weights(module):
