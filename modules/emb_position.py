@@ -1,26 +1,7 @@
-import torch, einops
+import torch
 from torch import nn
 import numpy as np
-from timm.models.layers import trunc_normal_
-class PositionEmbedding(nn.Module):
-    def __init__(self, size, dim=512):
-        super().__init__()
-        self.size=size
-        self.pe = nn.Embedding(size+1, dim, padding_idx=0)
-        self.pos_ids = torch.arange(1, size+1, dtype=torch.long).cuda()
-        
-    def forward(self, emb):
-        device = emb.device
-        b, n, *_ = emb.shape
-        pos_ids = self.pos_ids
-        if n > self.size:
-            zeros = torch.zeros(n-self.size, dtype=torch.long, device=device)
-            pos_ids = torch.cat([pos_ids, zeros])
-        pos_ids = einops.repeat(pos_ids, 'n -> b n', b=b)
-        pos_emb = self.pe(pos_ids) # [b n pe_dim]
-        embeddings = torch.cat([emb, pos_emb], dim=-1)
-        return embeddings
-        
+
 class PPEG(nn.Module):
     def __init__(self, dim=512,k=7,conv_1d=False,bias=True):
         super(PPEG, self).__init__()
@@ -38,7 +19,6 @@ class PPEG(nn.Module):
         # if add_length >0:
         x = torch.cat([x, x[:,:add_length,:]],dim = 1) 
 
-        # 避免最后补出来的特征图小于卷积核，这里只能用zero padding
         if H < 7:
             H,W = 7,7
             zero_pad = H * W - (N+add_length)
@@ -160,58 +140,3 @@ class SINCOS(nn.Module):
         #     x = x[:,:-add_length]
 
         return x
-
-class APE(nn.Module):
-    def __init__(self,embed_dim=512,num_patches=64):
-        super(APE, self).__init__()
-        self.absolute_pos_embed = nn.Parameter(torch.zeros( num_patches, embed_dim))
-        trunc_normal_(self.absolute_pos_embed, std=.02)
-    
-    def forward(self, x):
-        B,H,W,C = x.shape
-        return x + self.absolute_pos_embed.unsqueeze(1).unsqueeze(1).repeat(1,H,W,1)
-
-class RPE(nn.Module):
-    def __init__(self,num_heads=8,window_size=(8,8)):
-        super(RPE, self).__init__()
-        self.window_size = window_size
-
-        # define a parameter table of relative position bias
-        self.relative_position_bias_table = nn.Parameter(
-            torch.zeros((2 * window_size[0] - 1) * (2 * window_size[1] - 1), num_heads))  # 2*Wh-1 * 2*Ww-1, nH
-
-        # get pair-wise relative position index for each token inside the window
-        coords_h = torch.arange(window_size[0])
-        coords_w = torch.arange(window_size[1])
-        coords = torch.stack(torch.meshgrid([coords_h, coords_w]))  # 2, Wh, Ww
-        coords_flatten = torch.flatten(coords, 1)  # 2, Wh*Ww
-        relative_coords = coords_flatten[:, :, None] - coords_flatten[:, None, :]  # 2, Wh*Ww, Wh*Ww
-        relative_coords = relative_coords.permute(1, 2, 0).contiguous()  # Wh*Ww, Wh*Ww, 2
-        relative_coords[:, :, 0] += window_size[0] - 1  # shift to start from 0
-        relative_coords[:, :, 1] += window_size[1] - 1
-        relative_coords[:, :, 0] *= 2 * window_size[1] - 1
-        relative_position_index = relative_coords.sum(-1)  # Wh*Ww, Wh*Ww
-        self.register_buffer("relative_position_index", relative_position_index)
-        trunc_normal_(self.relative_position_bias_table, std=.02)
-    
-    def forward(self, x):
-        relative_position_bias = self.relative_position_bias_table[self.relative_position_index.view(-1)].view(
-            self.window_size[0] * self.window_size[1], self.window_size[0] * self.window_size[1], -1)  # Wh*Ww,Wh*Ww,nH
-        relative_position_bias = relative_position_bias.permute(2, 0, 1).contiguous()  # nH, Wh*Ww, Wh*Ww
-        print(relative_position_bias.size())
-
-        return x + self.absolute_pos_embed.unsqueeze(1).unsqueeze(1).repeat(1,H,W,1)
-
-# class PEG(nn.Module):
-#     def __init__(self, dim=512):
-#         super(PEG, self).__init__()
-#         self.proj = nn.Conv2d(dim, dim, 3, 1, 3//2, groups=dim)   
-
-#     def forward(self, x, H, W):
-#         B, _, C = x.shape
-#         # cls_token, feat_token = x[:, 0], x[:, 1:]
-#         cnn_feat = x.transpose(1, 2).view(B, C, H, W)
-#         x = self.proj(cnn_feat)+cnn_feat
-#         x = x.flatten(2).transpose(1, 2)
-#         # x = torch.cat((cls_token.unsqueeze(1), x), dim=1)
-#         return x

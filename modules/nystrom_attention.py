@@ -2,7 +2,6 @@ from math import ceil
 import torch
 from torch import nn, einsum
 import torch.nn.functional as F
-
 from einops import rearrange, reduce
 
 # helper functions
@@ -28,7 +27,6 @@ def moore_penrose_iter_pinv(x, iters = 6):
     return z
 
 # main attention class
-
 class NystromAttention(nn.Module):
     def __init__(
         self,

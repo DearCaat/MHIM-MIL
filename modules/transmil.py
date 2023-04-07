@@ -1,20 +1,13 @@
 import torch
 import torch.nn as nn
-import torch.nn.functional as F
 import numpy as np
 from .nystrom_attention import NystromAttention
-from .swin import SwinEncoder
 
 def initialize_weights(module):
     for m in module.modules():
         if isinstance(m, nn.Conv2d):
             # ref from huggingface
             nn.init.xavier_normal_(m.weight)
-            #nn.init.kaiming_normal_(m.weight, mode='fan_out', nonlinearity='relu')
-            # ref from meituan
-            # fan_out = m.kernel_size[0] * m.kernel_size[1] * m.out_channels
-            # fan_out //= m.groups
-            # m.weight.data.normal_(0, math.sqrt(2.0 / fan_out))
             if m.bias is not None:
                 m.bias.data.zero_()
         elif isinstance(m,nn.Linear):
@@ -45,7 +38,6 @@ class TransLayer(nn.Module):
 
         return x
 
-
 class PPEG(nn.Module):
     def __init__(self, dim=512):
         super(PPEG, self).__init__()
@@ -61,7 +53,6 @@ class PPEG(nn.Module):
         x = x.flatten(2).transpose(1, 2)
         x = torch.cat((cls_token.unsqueeze(1), x), dim=1)
         return x
-
 
 class TransMIL(nn.Module):
     def __init__(self, n_classes,dropout,act):

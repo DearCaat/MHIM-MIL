@@ -1,26 +1,11 @@
 import torch
 import torch.nn as nn
-import torch.nn.init as init
 import torch.nn.functional as F
 import torchvision.models as models
-import sys
-from .swin import SwinEncoder
-sys.path.append("..")
-from utils import group_shuffle
 
 def initialize_weights(module):
     for m in module.modules():
-        if isinstance(m, nn.Conv2d):
-            # ref from huggingface
-            nn.init.xavier_normal_(m.weight)
-            #nn.init.kaiming_normal_(m.weight, mode='fan_out', nonlinearity='relu')
-            # ref from meituan
-            # fan_out = m.kernel_size[0] * m.kernel_size[1] * m.out_channels
-            # fan_out //= m.groups
-            # m.weight.data.normal_(0, math.sqrt(2.0 / fan_out))
-            if m.bias is not None:
-                m.bias.data.zero_()
-        elif isinstance(m,nn.Linear):
+        if isinstance(m,nn.Linear):
             # ref from clam
             nn.init.xavier_normal_(m.weight)
             if m.bias is not None:
@@ -113,13 +98,11 @@ class AttentionGated(nn.Module):
         return Y_prob
 
 class DAttention(nn.Module):
-    def __init__(self,n_classes,dropout,act,test):
+    def __init__(self,n_classes,dropout,act):
         super(DAttention, self).__init__()
         self.L = 512 #512
         self.D = 128 #128
         self.K = 1
-        # self.feature = nn.Sequential(nn.Linear(1024, 512),nn.ReLU(),nn.Dropout(0.25))
-        #self.feature = [nn.Linear(192, 192)]
         self.feature = [nn.Linear(1024, 512)]
         
         if act.lower() == 'gelu':
@@ -130,9 +113,6 @@ class DAttention(nn.Module):
         if dropout:
             self.feature += [nn.Dropout(0.25)]
 
-        #self.feature += [SwinEncoder(attn='native',pool='none',mlp_dim=192,n_heads=3,region_num=1,trans_conv=True)] 
-
-        #self.feature += [SwinEncoder(attn='swin',pool='none',trans_conv=True)] 
         self.feature = nn.Sequential(*self.feature)
 
         self.attention = nn.Sequential(
@@ -143,11 +123,7 @@ class DAttention(nn.Module):
         self.classifier = nn.Sequential(
             nn.Linear(self.L*self.K, n_classes),
         )
-        
 
-
-        if test:
-            self._test = nn.Linear(1024, 512)
         self.apply(initialize_weights)
     def forward(self, x, return_attn=False,no_norm=False):
         feature = self.feature(x)

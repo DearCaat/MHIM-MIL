@@ -8,8 +8,6 @@ from dataloader import *
 from torch.utils.data import DataLoader,Sampler, WeightedRandomSampler, RandomSampler
 import sys, argparse, os, copy, itertools
 import torchvision.transforms.functional as VF
-from optimizer.lookahead import Lookahead
-from optimizer.radam import RAdam
 from modules import attmil,clam,contrastive1_zxx,dsmil,transmil,mean_max,swin
 from tqdm import tqdm
 # import torch.nn.functional as F

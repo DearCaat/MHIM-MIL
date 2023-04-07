@@ -6,7 +6,6 @@ class MlpHead(nn.Module):
         self.out_dim = out_dim
         self.fc1 = nn.Linear(mlp_dim, hid_dim)
         self.bn = nn.LazyBatchNorm1d() if bn else None
-        # c16上，relu换成gelu会降低性能 nn.GELU()
         self.relu = nn.ReLU()
         self.fc2 = nn.Linear(hid_dim, out_dim)
 
