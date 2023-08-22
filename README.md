@@ -1,5 +1,5 @@
-# MHIM-MIL
-Training codes and logs of ICCV 2023 submission 6302
+# MHIM-MIL [Updating]
+Training codes and logs of [Multiple Instance Learning Framework with Masked Hard Instance Mining for Whole Slide Image Classification](https://arxiv.org/abs/2307.15254) [ICCV 2023 Oral]
 
 ## Training
 ```shell
