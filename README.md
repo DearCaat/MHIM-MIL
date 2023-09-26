@@ -32,3 +32,12 @@ python3 main.py --project=$PROJECT_NAME --dataset_root=$DATASET_PATH --model_pat
 ```shell
 python3 main.py --project=$PROJECT_NAME --dataset_root=$DATASET_PATH --model_path=$OUTPUT_PATH --cv_fold=3 --teacher_init=./modules/init_ckp/c16_3fold_init_transmil_seed2021 --mask_ratio_h=0.03 --mask_ratio_hr=0.5 --mrh_sche --title=transmil_101_sml80h3-0r50_mmcos_is --mask_ratio=0. --mask_ratio_l=0.8 --cl_alpha=0.1 --mm_sche --init_stu_type=fc --attn_layer=0 --seed=2021
 ```
+## Citing MHIM-MIL
+```
+@article{tang2023multiple,
+  title={Multiple Instance Learning Framework with Masked Hard Instance Mining for Whole Slide Image Classification},
+  author={Tang, Wenhao and Huang, Sheng and Zhang, Xiaoxian and Zhou, Fengtao and Zhang, Yi and Liu, Bo},
+  journal={arXiv preprint arXiv:2307.15254},
+  year={2023}
+}
+```
