@@ -34,10 +34,12 @@ python3 main.py --project=$PROJECT_NAME --dataset_root=$DATASET_PATH --model_pat
 ```
 ## Citing MHIM-MIL
 ```
-@article{tang2023multiple,
-  title={Multiple Instance Learning Framework with Masked Hard Instance Mining for Whole Slide Image Classification},
-  author={Tang, Wenhao and Huang, Sheng and Zhang, Xiaoxian and Zhou, Fengtao and Zhang, Yi and Liu, Bo},
-  journal={arXiv preprint arXiv:2307.15254},
-  year={2023}
+@InProceedings{Tang_2023_ICCV,
+    author    = {Tang, Wenhao and Huang, Sheng and Zhang, Xiaoxian and Zhou, Fengtao and Zhang, Yi and Liu, Bo},
+    title     = {Multiple Instance Learning Framework with Masked Hard Instance Mining for Whole Slide Image Classification},
+    booktitle = {Proceedings of the IEEE/CVF International Conference on Computer Vision (ICCV)},
+    month     = {October},
+    year      = {2023},
+    pages     = {4078-4087}
 }
 ```
