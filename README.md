@@ -23,14 +23,30 @@ python3 main.py --project=$PROJECT_NAME --dataset_root=$DATASET_PATH --model_pat
 python3 main.py --project=$PROJECT_NAME --datasets=tcga --dataset_root=$DATASET_PATH --model_path=$OUTPUT_PATH --cv_fold=4 --val_ratio=0.13 --title=transmil --model=pure --baseline=selfattn --seed=2021
 # abmil baseline on C16 dataset
 python3 main.py --project=$PROJECT_NAME --dataset_root=$DATASET_PATH --model_path=$OUTPUT_PATH --cv_fold=3 --title=abmil --model=pure --baseline=attn --seed=2021
+# DSMIL baseline on C16 dataset
+python3 main.py --project=$PROJECT_NAME --dataset_root=$DATASET_PATH --model_path=$OUTPUT_PATH --cv_fold=3 --title=dsmil --model=pure --baseline=dsmil --seed=2021
 ```
 ### Training MHIM-MIL
+#### ABMIL
 ```shell
+# C16
 python3 main.py --project=$PROJECT_NAME --dataset_root=$DATASET_PATH --model_path=$OUTPUT_PATH --cv_fold=3 --teacher_init=./modules/init_ckp/c16_3fold_init_abmil_seed2021 --title=abmil_101_mr50h1-0r50_is --baseline=attn --num_workers=0 --cl_alpha=0.1 --mask_ratio_h=0.01 --mask_ratio_hr=0.5 --mrh_sche --init_stu_type=fc --mask_ratio=0.5 --mask_ratio_l=0. --seed=2021
+# TCGA-NSCLC
+python3 main.py --project=$PROJECT_NAME --dataset_root=$DATASET_PATH --model_path=$OUTPUT_PATH --cv_fold=4 --val_ratio=0.13 --teacher_init=./modules/init_ckp/tcga_4fold_init_abmil_seed2021 --title=abmil_105_mr70l20h2-0_mmcos_is --baseline=attn --num_workers=0 --cl_alpha=0.5 --mask_ratio_h=0.02 --mrh_sche --mm_sche --init_stu_type=fc --mask_ratio=0.7 --mask_ratio_l=0.2 --seed=2021
 ```
-
+#### TransMIL
 ```shell
+# C16
 python3 main.py --project=$PROJECT_NAME --dataset_root=$DATASET_PATH --model_path=$OUTPUT_PATH --cv_fold=3 --teacher_init=./modules/init_ckp/c16_3fold_init_transmil_seed2021 --mask_ratio_h=0.03 --mask_ratio_hr=0.5 --mrh_sche --title=transmil_101_sml80h3-0r50_mmcos_is --mask_ratio=0. --mask_ratio_l=0.8 --cl_alpha=0.1 --mm_sche --init_stu_type=fc --attn_layer=0 --seed=2021
+# TCGA-NSCLC
+python3 main.py --project=$PROJECT_NAME --dataset_root=$DATASET_PATH --model_path=$OUTPUT_PATH --cv_fold=4 --val_ratio=0.13 --teacher_init=./modules/init_ckp/tcga_4fold_init_transmil_seed2021 --mask_ratio_h=0.02 --mrh_sche --title=transmil_105_smr60l20h2-0_is --mask_ratio=0.6 --mask_ratio_l=0.2 --cl_alpha=0.5 --init_stu_type=fc --attn_layer=0 --seed=2021
+```
+#### DSMIL (same hyper-param with ABMIL, maybe not optimal)
+```shell
+# C16
+python3 main.py --project=$PROJECT_NAME --dataset_root=$DATASET_PATH --model_path=$OUTPUT_PATH --cv_fold=3 --teacher_init=./modules/init_ckp/c16_3fold_init_dsmil_seed2021 --title=dsmil_101_mr50h1-0r50_is --baseline=dsmil --num_workers=0 --cl_alpha=0.1 --mask_ratio_h=0.01 --mask_ratio_hr=0.5 --mrh_sche --init_stu_type=fc --mask_ratio=0.5 --mask_ratio_l=0. --seed=2021
+# TCGA-NSCLC
+python3 main.py --project=$PROJECT_NAME --dataset_root=$DATASET_PATH --model_path=$OUTPUT_PATH --cv_fold=4 --val_ratio=0.13 --teacher_init=./modules/init_ckp/tcga_4fold_init_dsmil_seed2021 --title=dsmil_105_mr70l20h2-0_mmcos_is --baseline=dsmil --num_workers=0 --cl_alpha=0.5 --mask_ratio_h=0.02 --mrh_sche --mm_sche --init_stu_type=fc --mask_ratio=0.7 --mask_ratio_l=0.2 --seed=2021
 ```
 ## Citing MHIM-MIL
 ```

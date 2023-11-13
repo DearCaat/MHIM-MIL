@@ -58,6 +58,8 @@ class MHIM(nn.Module):
             self.online_encoder = SAttention(mlp_dim=mlp_dim,head=head)
         elif baseline == 'attn':
             self.online_encoder = DAttention(mlp_dim,da_act)
+        elif baseline == 'dsmil':
+            self.online_encoder = DSMIL(mlp_dim=mlp_dim,mask_ratio=mask_ratio)
 
         self.predictor = nn.Linear(mlp_dim,n_classes)
 
