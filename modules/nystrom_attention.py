@@ -139,7 +139,7 @@ class NystromAttention(nn.Module):
         out = self.to_out(out)
         out = out[:, -n:]
         if return_attn:
-            attn1 = attn1[:,:,0].unsqueeze(-2) @ attn2
+            attn1 = attn1[:,:,-n].unsqueeze(-2) @ attn2
             attn1 = (attn1 @ attn3)
         
             return out, attn1[:,:,0,-n+1:]
