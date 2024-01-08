@@ -1,6 +1,8 @@
 # MHIM-MIL [Updating]
 Training codes and logs of [Multiple Instance Learning Framework with Masked Hard Instance Mining for Whole Slide Image Classification](https://arxiv.org/abs/2307.15254) [ICCV 2023 Oral]
-
+## TODO
+- Uploading datasets, only including features
+- Uploading paper slides and video
 ## Prepare Patch Features
 To preprocess WSIs, we used [CLAM](https://github.com/mahmoodlab/CLAM/tree/master#wsi-segmentation-and-patching).
 ### Patching
