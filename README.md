@@ -1,18 +1,18 @@
 # MHIM-MIL [Updating]
-Training codes and logs of [Multiple Instance Learning Framework with Masked Hard Instance Mining for Whole Slide Image Classification](https://arxiv.org/abs/2307.15254) [ICCV 2023 Oral]
+Official repo of [Multiple Instance Learning Framework with Masked Hard Instance Mining for Whole Slide Image Classification](https://arxiv.org/abs/2307.15254) [ICCV 2023 Oral]
 ## TODO
 - ~~Uploading datasets, only including features~~
 - Uploading paper slides and video
 ## Prepare Patch Features
 To preprocess WSIs, we used [CLAM](https://github.com/mahmoodlab/CLAM/tree/master#wsi-segmentation-and-patching).
 
-Download the preprocessed path features: [Baidu Cloud](https://pan.baidu.com/s/1zHGFocNrVDkLjB-g6aXfHw?pwd=2023).
+Download the preprocessed patch features: [Baidu Cloud](https://pan.baidu.com/s/1zHGFocNrVDkLjB-g6aXfHw?pwd=2023).
 
 ### Patching
 ```shell
 # for C16
 python create_patches_fp.py --source DATA_DIRECTORY --save_dir RESULTS_DIRECTORY --patch_size 512 --step_size 512 --preset bwh_biopsy.csv --seg --patch
-# for TCGA
+# for TCGA-NSCLC
 python create_patches_fp.py --source DATA_DIRECTORY --save_dir RESULTS_DIRECTORY --patch_size 512 --step_size 512 --preset tcga.csv --seg --patch
 ```
 ### Feature Extraction
@@ -24,7 +24,7 @@ CUDA_VISIBLE_DEVICES=0,1 python extract_features_fp.py --data_h5_dir DIR_TO_COOR
 ```shell
 # transmil baseline on C16 dataset
 python3 main.py --project=$PROJECT_NAME --dataset_root=$DATASET_PATH --model_path=$OUTPUT_PATH --cv_fold=3 --title=transmil --model=pure --baseline=selfattn --seed=2021
-# transmil baseline on TCGA dataset
+# transmil baseline on TCGA-NSCLC dataset
 python3 main.py --project=$PROJECT_NAME --datasets=tcga --dataset_root=$DATASET_PATH --model_path=$OUTPUT_PATH --cv_fold=4 --val_ratio=0.13 --title=transmil --model=pure --baseline=selfattn --seed=2021
 # abmil baseline on C16 dataset
 python3 main.py --project=$PROJECT_NAME --dataset_root=$DATASET_PATH --model_path=$OUTPUT_PATH --cv_fold=3 --title=abmil --model=pure --baseline=attn --seed=2021
