@@ -1,7 +1,7 @@
 # MHIM-MIL [Updating]
-Official repo of **Multiple Instance Learning Framework with Masked Hard Instance Mining for Whole Slide Image Classification**, ICCV 2023. [[arXiv]](https://arxiv.org/abs/2307.15254) [[Slide]](.\doc\iccv_oral.pdf) [[Oral]]([iccv 2023 oral of HMHIM (youtube.com)](https://www.youtube.com/watch?v=ePZTtX0_tRQ))
+Official repo of **Multiple Instance Learning Framework with Masked Hard Instance Mining for Whole Slide Image Classification**, ICCV 2023. [[arXiv]](https://arxiv.org/abs/2307.15254) [[Slide]](doc/iccv_oral.pdf) [[Oral]](https://www.youtube.com/watch?v=ePZTtX0_tRQ)
 
-![](.\doc\vis.png)
+![](doc/vis.png)
 
 ## TODO
 - ~~Uploading datasets, only including features~~
