@@ -6,6 +6,7 @@ Official repo of **Multiple Instance Learning Framework with Masked Hard Instanc
 ## TODO
 - ~~Uploading datasets, only including features~~
 - ~~Uploading paper slides and video~~
+- Updating DOCKERFILE ([Docker image](https://pan.baidu.com/s/1EN1JUbIjAl73NwHZF3YlPA?pwd=fek8) has been uploaded!)
 ## Prepare Patch Features
 To preprocess WSIs, we used [CLAM](https://github.com/mahmoodlab/CLAM/tree/master#wsi-segmentation-and-patching).
 
@@ -23,6 +24,9 @@ python create_patches_fp.py --source DATA_DIRECTORY --save_dir RESULTS_DIRECTORY
 CUDA_VISIBLE_DEVICES=0,1 python extract_features_fp.py --data_h5_dir DIR_TO_COORDS --data_slide_dir DATA_DIRECTORY --csv_path CSV_FILE_NAME --feat_dir FEATURES_DIRECTORY --batch_size 512 --target_patch_size=224 --slide_ext .svs
 ```
 ## Training
+
+Download the Docker Image: [Baidu Cloud](https://pan.baidu.com/s/1EN1JUbIjAl73NwHZF3YlPA?pwd=fek8).
+
 ### Prepare Your Own Initiation Weight
 ```shell
 # transmil baseline on C16 dataset
