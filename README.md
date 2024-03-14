@@ -4,15 +4,16 @@ Official repo of **Multiple Instance Learning Framework with Masked Hard Instanc
 ![](doc/vis.png)
 
 ## News
+- I've found that the Baidu Cloud dataset link often fail, if you've found this you can leave an issue and I'll keep it updated. You can also check this [link](https://pan.baidu.com/s/1mSzLJ_RVCJFQGe2lZAvEUA?pwd=2024) to download the data you need.
 - Another work, **Feature Re-Embedding: Towards Foundation Model-Level Performance in Computational Pathology**, about computational pathology has been accepted by **CVPR2024**. [[arXiv]](https://arxiv.org/abs/2402.17228) [[Code]](https://github.com/DearCaat/RRT-MIL)
 - Updating DOCKERFILE ([Docker image](https://pan.baidu.com/s/1EN1JUbIjAl73NwHZF3YlPA?pwd=fek8) has been uploaded!)
-- Uploaded [datasets](https://pan.baidu.com/s/10NKByw7Txk4Vqc3UoN0qvQ?pwd=2023), only including features
+- Uploaded [datasets](https://pan.baidu.com/s/13q1ymvMbEE54vW8eGpyPQA?pwd=2023), only including features
 - Uploaded [paper slides](doc/iccv_oral.pdf) and [video](https://www.youtube.com/watch?v=ePZTtX0_tRQ)
 
 ## Prepare Patch Features
 To preprocess WSIs, we used [CLAM](https://github.com/mahmoodlab/CLAM/tree/master#wsi-segmentation-and-patching).
 
-Download the preprocessed patch features: [Baidu Cloud](https://pan.baidu.com/s/10NKByw7Txk4Vqc3UoN0qvQ?pwd=2023).
+Download the preprocessed patch features: [Baidu Cloud](https://pan.baidu.com/s/13q1ymvMbEE54vW8eGpyPQA?pwd=2023).
 
 ### Patching
 `--preset bwh_biopsy.csv` for C16, `--preset tcga.csv` for TCGA-NSCLS
