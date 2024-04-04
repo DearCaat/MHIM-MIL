@@ -258,7 +258,7 @@ def one_fold(args,k,ckc_metric,train_p, train_l, test_p, test_l,val_p,val_l):
     else:
         early_stopping = None
 
-    optimal_ac, opt_pre, opt_re, opt_fs, opt_auc,opt_epoch = 0, 0, 0, 0,0,0
+    optimal_ac, opt_pre, opt_re, opt_fs, opt_auc,opt_thr,opt_epoch = 0, 0, 0, 0,0,0,0
     opt_te_auc,opt_tea_auc,opt_te_fs,opt_te_tea_auc,opt_te_tea_fs  = 0., 0., 0., 0., 0.
     epoch_start = 0
 
@@ -290,7 +290,7 @@ def one_fold(args,k,ckc_metric,train_p, train_l, test_p, test_l,val_p,val_l):
     for epoch in range(epoch_start, args.num_epoch):
         train_loss,start,end = train_loop(args,model,model_tea,train_loader,optimizer,device,amp_autocast,criterion,loss_scaler,scheduler,k,mm_sche,epoch)
         train_time_meter.update(end-start)
-        stop,accuracy, auc_value, precision, recall, fscore, test_loss = val_loop(args,model,val_loader,device,criterion,early_stopping,epoch,model_tea)
+        stop,accuracy, auc_value, precision, recall, fscore, test_loss, threshold_optimal = val_loop(args,model,val_loader,device,criterion,early_stopping,epoch,model_tea)
 
         if model_tea is not None:
             _,accuracy_tea, auc_value_tea, precision_tea, recall_tea, fscore_tea, test_loss_tea = val_loop(args,model_tea,val_loader,device,criterion,None,epoch,model_tea)
@@ -394,6 +394,7 @@ def one_fold(args,k,ckc_metric,train_p, train_l, test_p, test_l,val_p,val_l):
             opt_re = recall
             opt_fs = fscore
             opt_auc = auc_value
+            opt_thr = threshold_optimal
             opt_epoch = epoch
 
             if not os.path.exists(args.model_path):
@@ -452,7 +453,7 @@ def one_fold(args,k,ckc_metric,train_p, train_l, test_p, test_l,val_p,val_l):
             info = model_tea.load_state_dict(best_std['teacher'])
             print(info)
 
-    accuracy, auc_value, precision, recall, fscore,test_loss_log = test(args,model,test_loader,device,criterion,model_tea)
+    accuracy, auc_value, precision, recall, fscore,test_loss_log = test(args,model,test_loader,device,criterion,model_tea,opt_thr)
     
     if args.wandb:
         wandb.log({
@@ -644,7 +645,7 @@ def val_loop(args,model,loader,device,criterion,early_stopping,epoch,model_tea=N
             loss_cls_meter.update(test_loss,1)
     
     # save the log file
-    accuracy, auc_value, precision, recall, fscore = five_scores(bag_labels, bag_logit)
+    accuracy, auc_value, precision, recall, fscore, threshold_optimal = five_scores(bag_labels, bag_logit)
     
     # early stop
     if early_stopping is not None:
@@ -652,9 +653,9 @@ def val_loop(args,model,loader,device,criterion,early_stopping,epoch,model_tea=N
         stop = early_stopping.early_stop
     else:
         stop = False
-    return stop,accuracy, auc_value, precision, recall, fscore,loss_cls_meter.avg
+    return stop,accuracy, auc_value, precision, recall, fscore,loss_cls_meter.avg, threshold_optimal
 
-def test(args,model,loader,device,criterion,model_tea=None):
+def test(args,model,loader,device,criterion,model_tea=None,opt_thr=None):
     if model_tea is not None:
         model_tea.eval()
     model.eval()
@@ -706,7 +707,9 @@ def test(args,model,loader,device,criterion,model_tea=None):
             test_loss_log = test_loss_log + test_loss.item()
     
     # save the log file
-    accuracy, auc_value, precision, recall, fscore = five_scores(bag_labels, bag_logit)
+    # cal the best thr with val set
+    opt_thr = opt_thr if args.best_thr_val else None
+    accuracy, auc_value, precision, recall, fscore, _ = five_scores(bag_labels, bag_logit,threshold_optimal=opt_thr)
     test_loss_log = test_loss_log/len(loader)
 
     return accuracy, auc_value, precision, recall, fscore,test_loss_log
@@ -746,6 +749,7 @@ if __name__ == '__main__':
     parser.add_argument('--accumulation_steps', default=1, type=int, help='Gradient accumulate')
     parser.add_argument('--clip_grad', default=.0, type=float, help='Gradient clip')
     parser.add_argument('--always_test', action='store_true', help='Test model in the training phase')
+    parser.add_argument('--best_thr_val', action='store_true', help='Cal the best thr with val set in the test phase. Thanks Weiyi Wu!')
 
     # Model
     # Other models

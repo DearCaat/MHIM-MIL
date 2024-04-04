@@ -94,9 +94,10 @@ def make_weights_for_balanced_classes_split(dataset):
 
     return torch.DoubleTensor(weight)
 
-def five_scores(bag_labels, bag_predictions):
-    fpr, tpr, threshold = roc_curve(bag_labels, bag_predictions, pos_label=1)
-    fpr_optimal, tpr_optimal, threshold_optimal = optimal_thresh(fpr, tpr, threshold)
+def five_scores(bag_labels, bag_predictions,threshold_optimal=None):
+    if threshold_optimal is None:
+        fpr, tpr, threshold = roc_curve(bag_labels, bag_predictions, pos_label=1)
+        fpr_optimal, tpr_optimal, threshold_optimal = optimal_thresh(fpr, tpr, threshold)
     # threshold_optimal=0.5
     auc_value = roc_auc_score(bag_labels, bag_predictions)
     this_class_label = np.array(bag_predictions)
