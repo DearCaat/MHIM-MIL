@@ -4,6 +4,7 @@ Official repo of **Multiple Instance Learning Framework with Masked Hard Instanc
 ![](doc/vis.png)
 
 ## News
+- I've updated the [preprocess parameters](dataset_csv/preprocess_tcga_nsclc.csv) of TCGA datasets. These parameters perform better on the NSCLC sub-project.
 - I've found that the Baidu Cloud dataset link often fail, if you've found this you can leave an issue and I'll keep it updated. You can also check this [link](https://pan.baidu.com/s/1mSzLJ_RVCJFQGe2lZAvEUA?pwd=2024) to download the data you need.
 - Another work, **Feature Re-Embedding: Towards Foundation Model-Level Performance in Computational Pathology**, about computational pathology has been accepted by **CVPR2024**. [[arXiv]](https://arxiv.org/abs/2402.17228) [[Code]](https://github.com/DearCaat/RRT-MIL)
 - Updating DOCKERFILE ([Docker image](https://pan.baidu.com/s/1EN1JUbIjAl73NwHZF3YlPA?pwd=fek8) has been uploaded!)
@@ -16,14 +17,14 @@ To preprocess WSIs, we used [CLAM](https://github.com/mahmoodlab/CLAM/tree/maste
 Download the preprocessed patch features: [Baidu Cloud](https://pan.baidu.com/s/13q1ymvMbEE54vW8eGpyPQA?pwd=2023).
 
 ### Patching
-`--preset bwh_biopsy.csv` for C16, `--preset tcga.csv` for TCGA-NSCLS
+`--preset` [bwh_biopsy.csv](https://github.com/mahmoodlab/CLAM/blob/master/presets/bwh_biopsy.csv) for C16 (*It's the preset parameters officially provided by CLAM*), `--preset` [preprocess_tcga_nsclc.csv](dataset_csv/preprocess_tcga_nsclc.csv) for TCGA-NSCLS (*It's the customized parameters*).
 ```shell
 # for C16
 python create_patches_fp.py --source DATA_DIRECTORY --save_dir RESULTS_DIRECTORY --patch_size 512 \
 --step_size 512 --preset bwh_biopsy.csv --seg --patch
 # for TCGA-NSCLC
 python create_patches_fp.py --source DATA_DIRECTORY --save_dir RESULTS_DIRECTORY --patch_size 512 \
---step_size 512 --preset tcga.csv --seg --patch
+--step_size 512 --preset preprocess_tcga_nsclc.csv --seg --patch
 ```
 ### Feature Extraction
 ```shell
