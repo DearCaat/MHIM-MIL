@@ -200,6 +200,8 @@ def one_fold(args,k,ckc_metric,train_p, train_l, test_p, test_l,val_p,val_l):
         if not args.no_log:
             print('######### Model Initializing.....')
         pre_dict = torch.load(_teacher_init)
+        if 'model' in pre_dict:
+            pre_dict = pre_dict['model']
         new_state_dict ={}
         if args.init_stu_type == 'fc':
         # only patch_to_emb
@@ -221,6 +223,8 @@ def one_fold(args,k,ckc_metric,train_p, train_l, test_p, test_l,val_p,val_l):
                 print('######### Teacher Initializing.....')
             try:
                 pre_dict = torch.load(_teacher_init)
+                if 'model' in pre_dict:
+                    pre_dict = pre_dict['model']
                 info = model_tea.load_state_dict(pre_dict,strict=False)
                 if not args.no_log:
                     print(info)
