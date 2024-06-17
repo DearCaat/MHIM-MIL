@@ -14,7 +14,7 @@ Official repo of **Multiple Instance Learning Framework with Masked Hard Instanc
 ## Prepare Patch Features
 To preprocess WSIs, we used [CLAM](https://github.com/mahmoodlab/CLAM/tree/master#wsi-segmentation-and-patching).
 
-Download the preprocessed patch features: [Baidu Cloud](https://pan.baidu.com/s/13q1ymvMbEE54vW8eGpyPQA?pwd=2023).
+Download the preprocessed patch features: [Baidu Cloud](https://pan.baidu.com/s/13q1ymvMbEE54vW8eGpyPQA?pwd=2023), [Backup Link](https://pan.baidu.com/s/1mSzLJ_RVCJFQGe2lZAvEUA?pwd=2024).
 
 ### Patching
 `--preset` [bwh_biopsy.csv](https://github.com/mahmoodlab/CLAM/blob/master/presets/bwh_biopsy.csv) for C16 (*It's the preset parameters officially provided by CLAM*), `--preset` [preprocess_tcga_nsclc.csv](dataset_csv/preprocess_tcga_nsclc.csv) for TCGA-NSCLS (*It's the customized parameters*).
