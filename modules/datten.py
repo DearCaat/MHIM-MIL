@@ -189,32 +189,13 @@ class DSMIL(nn.Module):
             # 通过bag和inst综合判断
             if self.attn_index == 'max':
                 attn,_ = torch.max(classes,-1) if self.cls_attn else torch.max(A,-1)
-                # pred = 0.5*torch.softmax(prediction_bag,dim=-1)+0.5*torch.softmax(classes_bag,dim=-1)
-                # _,_attn_idx = torch.max(pred.squeeze(),0)
-            #     _,_attn_idx = torch.max(classes_bag,0)
-            #     attn = classes[:,int(_attn_idx)] if self.cls_attn else A[:,int(_attn_idx)]
-            elif self.attn_index == 'label':
-                if label is None:
-                    pred = 0.5*torch.softmax(prediction_bag,dim=-1)+0.5*torch.softmax(classes_bag,dim=-1)
-                    _,_attn_idx = torch.max(pred.squeeze(),0)
-                    attn = classes[:,int(_attn_idx)] if self.cls_attn else A[:,int(_attn_idx)]
-                else:
-                    attn = classes[:,label[0]] if self.cls_attn else A[:,label[0]]
             else:
                 attn = classes[:,int(self.attn_index)] if self.cls_attn else A[:,int(self.attn_index)]
             attn = attn.unsqueeze(0)
         else:
             attn = None
 
-        if self.training and criterion is not None:
-            # if isinstance(loss,nn.CrossEntropyLoss):
-            max_loss = criterion(classes_bag.view(1,-1),label)
-            # elif isinstance(loss,nn.BCEWithLogitsLoss):
-            #     max_loss = loss(classes.view(1, -1), label.view(1, -1).float())
-            # 
-            return prediction_bag,attn,B,max_loss
-        else:
-            return prediction_bag,attn,B,classes_bag.unsqueeze(0)
+        return prediction_bag,classes_bag.unsqueeze(0),attn,B
     
     def random_masking(self, x, mask_ratio,ids_shuffle=None,len_keep=None):
         """
@@ -251,14 +232,8 @@ class DSMIL(nn.Module):
         if mask_enable and (self.mask_ratio > 0. or mask_ids is not None):
             x, _,_ = self.random_masking(x,self.mask_ratio,mask_ids,len_keep)
 
-        _label = kwargs['label'] if 'label' in kwargs else None    
-        _criterion = kwargs['criterion'] if 'criterion' in kwargs else None
-
-        prediction_bag, attn, B, other = self.attention(x, no_norm, _label, _criterion,return_attn=return_attn)
-
-        logits = prediction_bag
-
+        logits, logits_ins,attn, B= self.attention(x, no_norm, return_attn=return_attn)
         if return_attn:
-            return B, logits, other, attn
+            return [logits, logits_ins],B, attn
         else:   
-            return B, logits, other
+            return [logits, logits_ins],B

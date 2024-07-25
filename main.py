@@ -516,27 +516,35 @@ def train_loop(args,model,model_tea,loader,optimizer,device,amp_autocast,criteri
 
             if args.model == 'mhim':
                 if model_tea is not None:
-                    cls_tea,attn = model_tea.forward_teacher(bag,return_attn=True)
+                    cls_tea,attn = model_tea.forward_teacher(bag)
                 else:
                     attn,cls_tea = None,None
 
                 cls_tea = None if args.cl_alpha == 0. else cls_tea
 
-                train_logits, cls_loss,patch_num,keep_num = model(bag,attn,cls_tea,i=epoch*len(loader)+i)
+                if args.baseline == 'dsmil':
+                    logits, cls_loss,patch_num,keep_num = model(bag,attn,cls_tea[0],i=epoch*len(loader)+i)
+                    logit_loss = 0.5*criterion(logits[0].view(batch_size,-1),label) + 0.5*criterion(logits[1].view(batch_size,-1),label)
+                else:
+                    logits, cls_loss,patch_num,keep_num = model(bag,attn,cls_tea,i=epoch*len(loader)+i)
 
             elif args.model == 'pure':
-                train_logits, cls_loss,patch_num,keep_num = model.pure(bag)
+                if args.baseline == 'dsmil':
+                    logits, cls_loss,patch_num,keep_num = model.pure(bag)
+                    logit_loss = 0.5*criterion(logits[0].view(batch_size,-1),label) + 0.5*criterion(logits[1].view(batch_size,-1),label)
+                else:
+                    logits, cls_loss,patch_num,keep_num = model.pure(bag)
             elif args.model in ('clam_sb','clam_mb','dsmil'):
-                train_logits,cls_loss,patch_num = model(bag,label,criterion)
+                logits,cls_loss,patch_num = model(bag,label,criterion)
                 keep_num = patch_num
             else:
-                train_logits = model(bag)
+                logits = model(bag)
                 cls_loss,patch_num,keep_num = 0.,0.,0.
-
-            if args.loss == 'ce':
-                logit_loss = criterion(train_logits.view(batch_size,-1),label)
-            elif args.loss == 'bce':
-                logit_loss = criterion(train_logits.view(batch_size,-1),one_hot(label.view(batch_size,-1).float(),num_classes=2))
+            if logit_loss is None:
+                if args.loss == 'ce':
+                    logit_loss = criterion(logits.view(batch_size,-1),label)
+                elif args.loss == 'bce':
+                    logit_loss = criterion(logits.view(batch_size,-1),one_hot(label.view(batch_size,-1).float(),num_classes=2))
 
         train_loss = args.cls_alpha * logit_loss +  cls_loss*args.cl_alpha
 
@@ -622,13 +630,15 @@ def val_loop(args,model,loader,device,criterion,early_stopping,epoch,model_tea=N
             label=data[1].to(device)
             if args.model in ('mhim','pure'):
                 test_logits = model.forward_test(bag)
+                if args.baseline == 'dsmil':
+                    test_logits = test_logits[0]
             elif args.model == 'dsmil':
                 test_logits,_ = model(bag)
             else:
                 test_logits = model(bag)
 
             if args.loss == 'ce':
-                if (args.model == 'dsmil' and args.ds_average) or (args.model == 'mhim' and isinstance(test_logits,(list,tuple))):
+                if (args.model == 'dsmil' and args.ds_average) or (args.model == 'mhim' and isinstance(test_logits,(list,tuple))) or (args.model == 'pure' and args.backbone == 'dsmil'):
                     test_loss = criterion(test_logits[0].view(batch_size,-1),label)
                     bag_logit.append((0.5*torch.softmax(test_logits[1],dim=-1)+0.5*torch.softmax(test_logits[0],dim=-1))[:,1].cpu().squeeze().numpy())
                 else:
@@ -685,13 +695,15 @@ def test(args,model,loader,device,criterion,model_tea=None,opt_thr=None):
             label=data[1].to(device)
             if args.model in ('mhim','pure'):
                 test_logits = model.forward_test(bag)
+                if args.baseline == 'dsmil':
+                    test_logits = test_logits[0]
             elif args.model == 'dsmil':
                 test_logits,_ = model(bag)
             else:
                 test_logits = model(bag)
 
             if args.loss == 'ce':
-                if (args.model == 'dsmil' and args.ds_average) or (args.model == 'mhim' and isinstance(test_logits,(list,tuple))):
+                if (args.model == 'dsmil' and args.ds_average) or (args.model == 'mhim' and isinstance(test_logits,(list,tuple)))or (args.model == 'pure' and args.backbone == 'dsmil'):
                     test_loss = criterion(test_logits[0].view(batch_size,-1),label)
                     bag_logit.append((0.5*torch.softmax(test_logits[1],dim=-1)+0.5*torch.softmax(test_logits[0],dim=-1))[:,1].cpu().squeeze().numpy())
                 else:

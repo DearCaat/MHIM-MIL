@@ -42,6 +42,7 @@ class MHIM(nn.Module):
         self.msa_fusion = msa_fusion
         self.mrh_sche = mrh_sche
         self.attn_layer = attn_layer
+        self.baseline = baseline
 
         self.patch_to_emb = [nn.Linear(1024, 512)]
 
@@ -172,16 +173,15 @@ class MHIM(nn.Module):
         return len_keep,mask_ids
 
     @torch.no_grad()
-    def forward_teacher(self,x,return_attn=False):
+    def forward_teacher(self,x):
 
         x = self.patch_to_emb(x)
         x = self.dp(x)
 
-        if return_attn:
-            x,attn = self.online_encoder(x,return_attn=True)
+        if self.baseline == 'dsmil':
+            _,x,attn = self.online_encoder(x,return_attn=True)
         else:
-            x = self.online_encoder(x)
-            attn = None
+            x,attn = self.online_encoder(x,return_attn=True)
 
         return x,attn
     
@@ -194,35 +194,32 @@ class MHIM(nn.Module):
             x,a = self.online_encoder(x,return_attn=True,no_norm=no_norm)
         else:
             x = self.online_encoder(x)
-        x = self.predictor(x)
+
+        if self.baseline == 'dsmil':
+            pass
+        else:   
+            x = self.predictor(x)
 
         if return_attn:
             return x,a
         else:
             return x
 
-    def pure(self,x,return_attn=False):
+    def pure(self,x):
         x = self.patch_to_emb(x)
         x = self.dp(x)
         ps = x.size(1)
 
-        if return_attn:
-            x,attn = self.online_encoder(x,return_attn=True)
+        if self.baseline == 'dsmil':
+            x,_ = self.online_encoder(x)
         else:
             x = self.online_encoder(x)
-
-        x = self.predictor(x)
+            x = self.predictor(x)
 
         if self.training:
-            if return_attn:
-                return x, 0, ps,ps,attn
-            else:
-                return x, 0, ps,ps
+            return x, 0, ps,ps
         else:
-            if return_attn:
-                return x,attn
-            else:
-                return x
+            return x
 
     def forward_loss(self, student_cls_feat, teacher_cls_feat):
         if teacher_cls_feat is not None:
@@ -243,14 +240,22 @@ class MHIM(nn.Module):
             len_keep,mask_ids = self.get_mask(ps,i,attn)
         else:
             len_keep,mask_ids = ps,None
+        if self.baseline == 'dsmil':
+            # forward online network
+            student_logit,student_cls_feat= self.online_encoder(x,len_keep=len_keep,mask_ids=mask_ids,mask_enable=True)
 
-        # forward online network
-        student_cls_feat= self.online_encoder(x,len_keep=len_keep,mask_ids=mask_ids,mask_enable=True)
+            # cl loss
+            cls_loss= self.forward_loss(student_cls_feat=student_cls_feat,teacher_cls_feat=teacher_cls_feat)
 
-        # prediction
-        student_logit = self.predictor(student_cls_feat)
+            return student_logit, cls_loss,ps,len_keep
+        else:
+            # forward online network
+            student_cls_feat= self.online_encoder(x,len_keep=len_keep,mask_ids=mask_ids,mask_enable=True)
 
-        # cl loss
-        cls_loss= self.forward_loss(student_cls_feat=student_cls_feat,teacher_cls_feat=teacher_cls_feat)
+            # prediction
+            student_logit = self.predictor(student_cls_feat)
 
-        return student_logit, cls_loss,ps,len_keep
+            # cl loss
+            cls_loss= self.forward_loss(student_cls_feat=student_cls_feat,teacher_cls_feat=teacher_cls_feat)
+
+            return student_logit, cls_loss,ps,len_keep
