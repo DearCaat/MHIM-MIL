@@ -638,7 +638,7 @@ def val_loop(args,model,loader,device,criterion,early_stopping,epoch,model_tea=N
                 test_logits = model(bag)
 
             if args.loss == 'ce':
-                if (args.model == 'dsmil' and args.ds_average) or (args.model == 'mhim' and isinstance(test_logits,(list,tuple))) or (args.model == 'pure' and args.backbone == 'dsmil'):
+                if (args.model == 'dsmil' and args.ds_average) or (args.model == 'mhim' and isinstance(test_logits,(list,tuple))) or (args.model == 'pure' and args.baseline == 'dsmil'):
                     test_loss = criterion(test_logits[0].view(batch_size,-1),label)
                     bag_logit.append((0.5*torch.softmax(test_logits[1],dim=-1)+0.5*torch.softmax(test_logits[0],dim=-1))[:,1].cpu().squeeze().numpy())
                 else:
@@ -703,7 +703,7 @@ def test(args,model,loader,device,criterion,model_tea=None,opt_thr=None):
                 test_logits = model(bag)
 
             if args.loss == 'ce':
-                if (args.model == 'dsmil' and args.ds_average) or (args.model == 'mhim' and isinstance(test_logits,(list,tuple)))or (args.model == 'pure' and args.backbone == 'dsmil'):
+                if (args.model == 'dsmil' and args.ds_average) or (args.model == 'mhim' and isinstance(test_logits,(list,tuple)))or (args.model == 'pure' and args.baseline == 'dsmil'):
                     test_loss = criterion(test_logits[0].view(batch_size,-1),label)
                     bag_logit.append((0.5*torch.softmax(test_logits[1],dim=-1)+0.5*torch.softmax(test_logits[0],dim=-1))[:,1].cpu().squeeze().numpy())
                 else:

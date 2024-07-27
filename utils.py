@@ -107,7 +107,7 @@ def five_scores(bag_labels, bag_predictions,threshold_optimal=None):
     precision, recall, fscore, _ = precision_recall_fscore_support(bag_labels, bag_predictions, average='binary')
     accuracy = accuracy_score(bag_labels, bag_predictions)
     # accuracy = 1- np.count_nonzero(np.array(bag_labels).astype(int)- bag_predictions.astype(int)) / len(bag_labels)
-    return accuracy, auc_value, precision, recall, fscore
+    return accuracy, auc_value, precision, recall, fscore,threshold_optimal
 
 def cosine_scheduler(base_value, final_value, epochs, niter_per_ep, warmup_epochs=0, start_warmup_value=0):
     warmup_schedule = np.array([])
