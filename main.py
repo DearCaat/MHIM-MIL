@@ -9,7 +9,7 @@ from torch.utils.data import DataLoader, RandomSampler
 import argparse, os
 from modules import attmil,clam,mhim,dsmil,transmil,mean_max
 from torch.nn.functional import one_hot
-from torch.cuda.amp import GradScaler
+# from torch.cuda.amp import GradScaler
 from contextlib import suppress
 import time
 
@@ -97,8 +97,10 @@ def main(args):
 def one_fold(args,k,ckc_metric,train_p, train_l, test_p, test_l,val_p,val_l):
     # --->initiation
     seed_torch(args.seed)
-    loss_scaler = GradScaler() if args.amp else None
-    amp_autocast = torch.cuda.amp.autocast if args.amp else suppress
+    # loss_scaler = GradScaler() if args.amp else None
+    loss_scaler = None
+    # amp_autocast = torch.cuda.amp.autocast if args.amp else suppress
+    amp_autocast = suppress
     device = torch.device('cuda') if torch.cuda.is_available() else torch.device('cpu')
     acs,pre,rec,fs,auc,te_auc,te_fs = ckc_metric
 
@@ -807,7 +809,7 @@ if __name__ == '__main__':
     parser.add_argument('--title', default='default', type=str, help='Title of exp')
     parser.add_argument('--project', default='mil_new_c16', type=str, help='Project name of exp')
     parser.add_argument('--log_iter', default=100, type=int, help='Log Frequency')
-    parser.add_argument('--amp', action='store_true', help='Automatic Mixed Precision Training')
+    # parser.add_argument('--amp', action='store_true', help='Automatic Mixed Precision Training')
     parser.add_argument('--wandb', action='store_true', help='Weight&Bias')
     parser.add_argument('--num_workers', default=2, type=int, help='Number of workers in the dataloader')
     parser.add_argument('--no_log', action='store_true', help='Without log')
