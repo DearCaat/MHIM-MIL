@@ -556,23 +556,23 @@ def train_loop(args,model,model_tea,loader,optimizer,device,amp_autocast,criteri
                 model_parameters(model),
                 value=args.clip_grad, mode='norm')
 
-        if (i+1) % args.accumulation_steps == 0:
-            train_loss.backward()
-            optimizer.step()
-            if args.lr_supi and scheduler is not None:
-                scheduler.step()
-            if args.model == 'mhim':
-                if mm_sche is not None:
-                    mm = mm_sche[epoch*len(loader)+i]
-                else:
-                    mm = args.mm
-                if model_tea is not None:
-                    if args.tea_type == 'same':
-                        pass
-                    else:
-                        ema_update(model,model_tea,mm)
+        #if (i+1) % args.accumulation_steps == 0:
+        train_loss.backward()
+        optimizer.step()
+        if args.lr_supi and scheduler is not None:
+            scheduler.step()
+        if args.model == 'mhim':
+            if mm_sche is not None:
+                mm = mm_sche[epoch*len(loader)+i]
             else:
-                mm = 0.
+                mm = args.mm
+            if model_tea is not None:
+                if args.tea_type == 'same':
+                    pass
+                else:
+                    ema_update(model,model_tea,mm)
+        else:
+            mm = 0.
 
         loss_cls_meter.update(logit_loss,1)
         loss_cl_meter.update(cls_loss,1)
