@@ -509,19 +509,21 @@ def train_loop(args,model,model_tea,loader,optimizer,device,amp_autocast,criteri
             batch_size=bag.size(0)
             
         label=data[1].to(device)
-        
+
         with amp_autocast():
             if args.patch_shuffle:
                 bag = patch_shuffle(bag,args.shuffle_group)
             elif args.group_shuffle:
                 bag = group_shuffle(bag,args.shuffle_group)
-
+                
+            logit_loss = None
+            
             if args.model == 'mhim':
                 if model_tea is not None:
                     cls_tea,attn = model_tea.forward_teacher(bag)
                 else:
                     attn,cls_tea = None,None
-
+                
                 cls_tea = None if args.cl_alpha == 0. else cls_tea
 
                 if args.baseline == 'dsmil':
