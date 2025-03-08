@@ -49,6 +49,8 @@ def data_split(full_list, ratio, shuffle=True,label=None,label_balance_val=True)
                 random.shuffle(_list)
             sublist_1.extend(_list[:offset])
             sublist_2.extend(_list[offset:])
+        val_set = sublist_1
+        train_set = sublist_2
     else:
         n_total = len(full_list)
         offset = int(n_total * ratio)
