@@ -299,7 +299,7 @@ def one_fold(args,k,ckc_metric,train_p, train_l, test_p, test_l,val_p,val_l):
         stop,accuracy, auc_value, precision, recall, fscore, test_loss, threshold_optimal = val_loop(args,model,val_loader,device,criterion,early_stopping,epoch,model_tea)
 
         if model_tea is not None:
-            _,accuracy_tea, auc_value_tea, precision_tea, recall_tea, fscore_tea, test_loss_tea = val_loop(args,model_tea,val_loader,device,criterion,None,epoch,model_tea)
+            _,accuracy_tea, auc_value_tea, precision_tea, recall_tea, fscore_tea, test_loss_tea,_ = val_loop(args,model_tea,val_loader,device,criterion,None,epoch,model_tea)
             if args.wandb:
                 rowd = OrderedDict([
                     ("val_acc_tea",accuracy_tea),
