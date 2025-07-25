@@ -638,6 +638,8 @@ def val_loop(args,model,loader,device,criterion,early_stopping,epoch,model_tea=N
                     test_logits = test_logits[0]
             elif args.model == 'dsmil':
                 test_logits,_ = model(bag)
+            elif args.model in ('clam_sb','clam_mb'):
+                test_logits,_,_ = model(bag,label=label)
             else:
                 test_logits = model(bag)
 
@@ -703,6 +705,8 @@ def test(args,model,loader,device,criterion,model_tea=None,opt_thr=None):
                     test_logits = test_logits[0]
             elif args.model == 'dsmil':
                 test_logits,_ = model(bag)
+            elif args.model in ('clam_sb','clam_mb'):
+                test_logits,_,_ = model(bag,label=label)
             else:
                 test_logits = model(bag)
 
