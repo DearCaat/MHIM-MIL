@@ -95,4 +95,14 @@ python3 main.py --project=$PROJECT_NAME --dataset_root=$DATASET_PATH --model_pat
     year      = {2023},
     pages     = {4078-4087}
 }
+
+@misc{tang2025multipleinstancelearningframework,
+      title={Multiple Instance Learning Framework with Masked Hard Instance Mining for Gigapixel Histopathology Image Analysis}, 
+      author={Wenhao Tang and Sheng Huang and Heng Fang and Fengtao Zhou and Bo Liu and Qingshan Liu},
+      year={2025},
+      eprint={2509.11526},
+      archivePrefix={arXiv},
+      primaryClass={cs.CV},
+      url={https://arxiv.org/abs/2509.11526}, 
+}
 ```
