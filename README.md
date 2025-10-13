@@ -1,5 +1,5 @@
 # MHIM-MIL
-Official repo of **Multiple Instance Learning Framework with Masked Hard Instance Mining for Whole Slide Image Classification**, ICCV 2023. [[arXiv]](https://arxiv.org/abs/2307.15254) [[Slide]](doc/iccv_oral.pdf) [[Oral]](https://www.youtube.com/watch?v=ePZTtX0_tRQ)
+Official repo of **Multiple Instance Learning Framework with Masked Hard Instance Mining for Whole Slide Image Classification**, ICCV 2023. [[arXiv]](https://arxiv.org/abs/2307.15254) [[Slide]](doc/iccv_oral.pdf) [[Oral]](https://www.youtube.com/watch?v=ePZTtX0_tRQ) [[Huggingface Dataset]](https://huggingface.co/datasets/Dearcat/CPathPatchFeature)
 
 Official repo of **Multiple Instance Learning Framework with Masked Hard Instance Mining for Gigapixel Histopathology Image Analysis**, arXiv 2025. [[arXiv]](https://arxiv.org/abs/2509.11526)
 
@@ -11,13 +11,13 @@ Official repo of **Multiple Instance Learning Framework with Masked Hard Instanc
 - I've found that the Baidu Cloud dataset link often fail, if you've found this you can leave an issue and I'll keep it updated. You can also check this [link](https://pan.baidu.com/s/1mSzLJ_RVCJFQGe2lZAvEUA?pwd=2024) to download the data you need.
 - Another work, **Feature Re-Embedding: Towards Foundation Model-Level Performance in Computational Pathology**, about computational pathology has been accepted by **CVPR2024**. [[arXiv]](https://arxiv.org/abs/2402.17228) [[Code]](https://github.com/DearCaat/RRT-MIL)
 - Updating DOCKERFILE ([Docker image](https://pan.baidu.com/s/1EN1JUbIjAl73NwHZF3YlPA?pwd=fek8) has been uploaded!)
-- Uploaded [datasets](https://pan.baidu.com/s/13q1ymvMbEE54vW8eGpyPQA?pwd=2023), only including features
+- Uploaded datasets [Baidu](https://pan.baidu.com/s/13q1ymvMbEE54vW8eGpyPQA?pwd=2023), [Huggingface](https://huggingface.co/datasets/Dearcat/CPathPatchFeature), only including features
 - Uploaded [paper slides](doc/iccv_oral.pdf) and [video](https://www.youtube.com/watch?v=ePZTtX0_tRQ)
 
 ## Prepare Patch Features
 To preprocess WSIs, we used [CLAM](https://github.com/mahmoodlab/CLAM/tree/master#wsi-segmentation-and-patching).
 
-Download the preprocessed patch features: [Baidu Cloud](https://pan.baidu.com/s/13q1ymvMbEE54vW8eGpyPQA?pwd=2023), [Backup Link](https://pan.baidu.com/s/1mSzLJ_RVCJFQGe2lZAvEUA?pwd=2024).
+Download the preprocessed patch features: [Baidu Cloud](https://pan.baidu.com/s/13q1ymvMbEE54vW8eGpyPQA?pwd=2023), [Backup Link](https://pan.baidu.com/s/1mSzLJ_RVCJFQGe2lZAvEUA?pwd=2024), [Huggingface](https://huggingface.co/datasets/Dearcat/CPathPatchFeature).
 
 ### Patching
 `--preset` [bwh_biopsy.csv](https://github.com/mahmoodlab/CLAM/blob/master/presets/bwh_biopsy.csv) for C16 (*It's the preset parameters officially provided by CLAM*), `--preset` [preprocess_tcga_nsclc.csv](dataset_csv/preprocess_tcga_nsclc.csv) for TCGA-NSCLS (*It's the customized parameters*).
