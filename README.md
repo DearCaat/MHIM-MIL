@@ -1,17 +1,17 @@
 # MHIM-MIL
-Official repo of **Multiple Instance Learning Framework with Masked Hard Instance Mining for Whole Slide Image Classification**, ICCV 2023. [[arXiv]](https://arxiv.org/abs/2307.15254) [[Slide]](doc/iccv_oral.pdf) [[Oral]](https://www.youtube.com/watch?v=ePZTtX0_tRQ) [[Huggingface Dataset]](https://huggingface.co/datasets/Dearcat/CPathPatchFeature)
+Official repo of **Multiple Instance Learning Framework with Masked Hard Instance Mining for Whole Slide Image Classification**, ICCV 2023. [[arXiv]](https://arxiv.org/abs/2307.15254) [[Slide]](doc/iccv_oral.pdf) [[Oral]](https://www.youtube.com/watch?v=ePZTtX0_tRQ)
 
-Official repo of **Multiple Instance Learning Framework with Masked Hard Instance Mining for Gigapixel Histopathology Image Analysis**, arXiv 2025. [[arXiv]](https://arxiv.org/abs/2509.11526)
+Official repo of **Multiple Instance Learning Framework with Masked Hard Instance Mining for Gigapixel Histopathology Image Analysis**, arXiv 2025. [[arXiv]](https://arxiv.org/abs/2509.11526) [[Huggingface Dataset]](https://huggingface.co/datasets/Dearcat/CPathPatchFeature)
 
 ![](doc/vis_v2.png)
 
 ## News
-- Released **MHIM-v2: a more concise and effective method, with stronger and broader generalizability, and enhanced interpretability.** [[arxiv]](https://arxiv.org/abs/2509.11526)
+- Released **MHIM-v2: a more concise and effective method, with stronger and broader generalizability, and enhanced interpretability.** [[arxiv]](https://arxiv.org/abs/2509.11526) [[Huggingface Dataset]](https://huggingface.co/datasets/Dearcat/CPathPatchFeature)
 - I've updated the [preprocess parameters](dataset_csv/preprocess_tcga_nsclc.csv) of TCGA datasets. These parameters perform better on the NSCLC sub-project.
 - I've found that the Baidu Cloud dataset link often fail, if you've found this you can leave an issue and I'll keep it updated. You can also check this [link](https://pan.baidu.com/s/1mSzLJ_RVCJFQGe2lZAvEUA?pwd=2024) to download the data you need.
 - Another work, **Feature Re-Embedding: Towards Foundation Model-Level Performance in Computational Pathology**, about computational pathology has been accepted by **CVPR2024**. [[arXiv]](https://arxiv.org/abs/2402.17228) [[Code]](https://github.com/DearCaat/RRT-MIL)
 - Updating DOCKERFILE ([Docker image](https://pan.baidu.com/s/1EN1JUbIjAl73NwHZF3YlPA?pwd=fek8) has been uploaded!)
-- Uploaded datasets [Baidu](https://pan.baidu.com/s/13q1ymvMbEE54vW8eGpyPQA?pwd=2023), [Huggingface](https://huggingface.co/datasets/Dearcat/CPathPatchFeature), only including features
+- Uploaded datasets [Baidu](https://pan.baidu.com/s/13q1ymvMbEE54vW8eGpyPQA?pwd=2023), only including features
 - Uploaded [paper slides](doc/iccv_oral.pdf) and [video](https://www.youtube.com/watch?v=ePZTtX0_tRQ)
 
 ## Prepare Patch Features
