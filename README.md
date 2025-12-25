@@ -99,6 +99,7 @@ If you have raw Whole-Slide Image (WSI) data, you can preprocess it as follows:
 > **⚠️ Note:** We've significantly refactored the codebase! If you spot any issues, please let us know. You can still use the old version in the v1 branch.
 
 You can use [wandb](https://wandb.ai/site) to track the training process, add `--wandb` to the command line.
+
 For different patch encoders, you should use different input dimensions, use `--input_dim` to specify the input dimension (ResNet-50: 1024, PLIP: 512, UNI-v1: 1024, and so on).
 
 ### Prepare Your Own Initiation Weight
