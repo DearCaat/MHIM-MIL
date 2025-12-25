@@ -1,0 +1,11 @@
+#training:
+lr: 2e-4
+opt: adam
+weight_decay: 1e-5
+max_epoch: 100
+act: gelu
+
+#no_prefetch: true
+file_worker: true
+num_workers: 6
+seed: 2021

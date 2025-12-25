@@ -1,0 +1,17 @@
+#training:
+lr: 2e-4
+opt: adam
+weight_decay: 1e-5
+patient: 15
+
+loss: nll_surv
+n_classes: 4
+act: gelu
+
+val_raito: 0.
+max_epoch: 30
+file_worker: true
+num_workers: 6
+no_deter_algo: true
+
+cv_fold: 5
