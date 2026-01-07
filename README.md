@@ -1,7 +1,7 @@
 # MHIM-MIL
 Official repo of **Multiple Instance Learning Framework with Masked Hard Instance Mining for Whole Slide Image Classification**, ICCV 2023. [[arXiv]](https://arxiv.org/abs/2307.15254) [[Slide]](doc/iccv_oral.pdf) [[Oral]](https://www.youtube.com/watch?v=ePZTtX0_tRQ)
 
-Official repo of **Multiple Instance Learning Framework with Masked Hard Instance Mining for Gigapixel Histopathology Image Analysis**, IJCV 2025. [[arXiv]](https://arxiv.org/abs/2509.11526) [[Huggingface Dataset]](https://huggingface.co/datasets/Dearcat/CPathPatchFeature)
+Official repo of **Multiple Instance Learning Framework with Masked Hard Instance Mining for Gigapixel Histopathology Image Analysis**, IJCV 2025. [[arXiv]](https://arxiv.org/abs/2509.11526) [[Springer Nature]](https://rdcu.be/eXT8D) [[Huggingface Dataset]](https://huggingface.co/datasets/Dearcat/CPathPatchFeature)
 
 ![](doc/vis_v2.png)
 
